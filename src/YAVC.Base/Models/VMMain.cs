@@ -18,33 +18,33 @@ namespace YAVC.Base.Models {
 
         public bool IsConnected
         {
-            get { return GetValue(() => IsConnected); }
-            set { SetValue(value, () => IsConnected); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 
         public bool IsRefreshing
         {
-            get { return GetValue(() => IsRefreshing); }
-            set { SetValue(value, () => IsRefreshing); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 
         public SelectionMode SelectionMode
         {
-            get { return GetValue(() => SelectionMode); }
-            set { SetValue(value, () => SelectionMode); }
+            get { return GetValue<SelectionMode>(); }
+            set { SetValue(value); }
         }
 
         public string Version
         {
-            get { return GetValue(() => Version); }
-            set { SetValue(value, () => Version); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
 
         public VMZone SelectedZone
         {
-            get { return GetValue(() => SelectedZone); }
+            get { return GetValue<VMZone>(); }
             set {
-                if (SetValue(value, () => SelectedZone))
+                if (SetValue(value))
                 {
                     foreach (var z in Zones)
                     {
@@ -57,8 +57,8 @@ namespace YAVC.Base.Models {
 
         public VMZone[] Zones
         {
-            get { return GetValue(() => Zones); }
-            set { SetValue(value, () => Zones); }
+            get { return GetValue<VMZone[]>(); }
+            set { SetValue(value); }
         }
 
         
@@ -67,8 +67,8 @@ namespace YAVC.Base.Models {
 
         public bool IsPartyModeOn
         {
-            get { return GetValue(() => IsPartyModeOn); }
-            set { SetValue(value, () => IsPartyModeOn); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 		#endregion
 

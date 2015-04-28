@@ -41,19 +41,7 @@ namespace YAVC.Base.Models {
             return ((MemberExpression)propReference.Body).Member.Name;
         }
 
-		/// <summary>
-        /// Gets the value of the property specified by propertyName. If no
-        /// value is present, default(T) will be returned.
-        /// </summary>
-        /// <param name="propertyName">The name of the property (note this is case sensitive)
-        /// for which you're trying to get the value of</param>
-        protected T GetValue<T>(Expression<Func<T>> propReference)
-        {
-            var propertyName = GetPropertyName(propReference);
-            return GetValue<T>(propertyName);
-        }
-
-        protected T GetValue<T>([CallerMemberName] string propertyName = null)
+		protected T GetValue<T>([CallerMemberName] string propertyName = null)
         {
             if (PropertyValues.ContainsKey(propertyName))
                 return (T)PropertyValues[propertyName];
@@ -79,22 +67,15 @@ namespace YAVC.Base.Models {
             });
         }
 
-		/// <summary>
+        /// <summary>
         /// Sets the value of the property specified by propertyName.<para>
         /// If the value is different (via object.Equals(value, oldvalue)) then
         /// Notify(propertyName) will be called to let listeners know the property has changed.</para>
         /// </summary>
         /// <param name="value">The new value of the property you're trying to set.</param>
-        /// <param name="propertyReference">A lambda that has the property reference in it. For example,
-        /// if the property name is IsVisible then propertyRefernce should equal () => IsVisible</param>
+        /// <param name="propertyName">The name of the property you want to change. If calling from
+        /// a property Setter, you can omit this value to change the property you're currently setting.</param>
         /// <returns>True if the existing value was changed, false otherwise.</returns>
-        protected bool SetValue<T>(T value, Expression<Func<T>> propertyReference)
-        {
-            var propertyName = GetPropertyName(propertyReference);
-
-            return SetValue(value, propertyName);
-        }
-
         protected bool SetValue<T>(T value, [CallerMemberName] string propertyName = null)
         {
             var shouldNotify = !PropertyValues.ContainsKey(propertyName) || !object.Equals(value, PropertyValues[propertyName]);

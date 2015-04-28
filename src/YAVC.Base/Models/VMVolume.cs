@@ -19,18 +19,18 @@ namespace YAVC.Base.Models {
 
         public double Maximum
         {
-            get { return GetValue(() => Maximum); }
+            get { return GetValue<double>(); }
             set {
-                if (SetValue(value, () => Maximum))
+                if (SetValue(value))
                     NotifyAll();
             }
         }
 
         public double Minimum
         {
-            get { return GetValue(() => Minimum); }
+            get { return GetValue<double>(); }
             set {
-                if (SetValue(value, () => Minimum))
+                if (SetValue(value))
                     NotifyAll();
                 }
         }

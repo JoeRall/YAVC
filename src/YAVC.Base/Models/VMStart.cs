@@ -21,13 +21,13 @@ namespace YAVC.Base.Models {
 		private string _AddingDeviceStatus;
         public string AddingDeviceStatus
         {
-            get { return GetValue(() => AddingDeviceStatus); }
-            set { SetValue(value, () => AddingDeviceStatus); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
         public double AddingDevicePercentage
         {
-            get { return GetValue(() => AddingDevicePercentage); }
-            set { SetValue(value, () => AddingDevicePercentage); }
+            get { return GetValue<double>(); }
+            set { SetValue(value); }
         }
         #endregion
 

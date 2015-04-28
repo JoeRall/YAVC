@@ -26,8 +26,8 @@ namespace YAVC.Base.Models {
         }
         public string DSPTitle
         {
-            get { return GetValue(() => DSPTitle); }
-            set { SetValue(value, () => DSPTitle); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
 		
         private readonly VMSelectable[] _DSPs;
@@ -35,22 +35,22 @@ namespace YAVC.Base.Models {
 
         public string InputTitle
         {
-            get { return GetValue(() => InputTitle); }
-            set { SetValue(value, () => InputTitle); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
         public VMSelectable[] Inputs
         {
-            get { return GetValue(() => Inputs); }
-            set { SetValue(value, () => Inputs); }
+            get { return GetValue<VMSelectable[]>(); }
+            set { SetValue(value); }
         }
         
         public bool IsActiveZone { get { return MainVM.SelectedZone == this; } }
 
         public bool IsOn
         {
-            get { return GetValue(() => IsOn); }
+            get { return GetValue<bool>(); }
             set {
-                if (SetValue(value, () => IsOn))
+                if (SetValue(value))
                 {
                     Notify(() => IsOnString);
                     Volume.Refresh(); //-- Volume has an IsOn property that is called into b
@@ -64,34 +64,34 @@ namespace YAVC.Base.Models {
 
         public bool IsPureDirectOn
         {
-            get { return GetValue(() => IsPureDirectOn); }
-            set { SetValue(value, () => IsPureDirectOn); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 
         public VMList List
         {
-            get { return GetValue(() => List); }
-            set { SetValue(value, () => List); }
+            get { return GetValue<VMList>(); }
+            set { SetValue(value); }
         }
 
         public VMPlayback Playback
         {
-            get { return GetValue(() => Playback); }
-            set { SetValue(value, () => Playback); }
+            get { return GetValue<VMPlayback>(); }
+            set { SetValue(value); }
         }
 
         public VMSelectable[] Scenes
         {
-            get { return GetValue(() => Scenes); }
-            set { SetValue(value, () => Scenes); }
+            get { return GetValue<VMSelectable[]>(); }
+            set { SetValue(value); }
         }
 
         public Input SelectedInput
         {
-            get { return GetValue(() => SelectedInput); }
+            get { return GetValue<Input>(); }
             set
             {
-                if (SetValue(value, () => SelectedInput))
+                if (SetValue(value))
                 {
                     Notify(() => CanViewPlayback);
                 }
@@ -102,14 +102,14 @@ namespace YAVC.Base.Models {
 
         public VMVolume Volume
         {
-            get { return GetValue(() => Volume); }
-            set { SetValue(value, () => Volume); }
+            get { return GetValue<VMVolume>(); }
+            set { SetValue(value); }
         }
 
         public string ZoneTitle
         {
-            get { return GetValue(() => ZoneTitle); }
-            set { SetValue(value, () => ZoneTitle); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
         #endregion
 

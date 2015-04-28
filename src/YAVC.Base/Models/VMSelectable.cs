@@ -10,40 +10,40 @@ namespace YAVC.Base.Models {
 
         public string ImageUri
         {
-            get { return GetValue(() => ImageUri); }
-            set { SetValue(value, () => ImageUri); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
 
 
         public bool IsSelected
         {
-            get { return GetValue(() => IsSelected); }
-            set { SetValue(value, () => IsSelected); }
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
 
         public string DisplayName
         {
-            get { return GetValue(() => DisplayName); }
-            set { SetValue(value, () => DisplayName); }
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
 
         public VMSelectableType SelectionType
         {
-            get { return GetValue(() => SelectionType); }
-            set { SetValue(value, () => SelectionType); }
+            get { return GetValue<VMSelectableType>(); }
+            set { SetValue(value); }
         }
 
 
         public string SelectString
         {
-            get { return GetValue(() => SelectString); }
-            private set { SetValue(value, () => SelectString); }
+            get { return GetValue<string>(); }
+            private set { SetValue(value); }
         }
 
         public VMMain MainVM
         {
-            get { return GetValue(() => MainVM); }
-            private set { SetValue(value, () => MainVM); }
+            get { return GetValue<VMMain>(); }
+            private set { SetValue(value); }
         }
 		
         
