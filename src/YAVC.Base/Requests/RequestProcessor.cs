@@ -9,26 +9,19 @@ namespace YAVC.Base.Requests
 {
     public class RequestProcessor : IProcessRequest
     {
-
         private static Encoding CommandEncoding { get { return Encoding.UTF8; } }
 
-        private void Process(RequestState state)
-        {
-            Process(state.Infos, state.HostName, state.OnResponse, state.OnCompleted);
-        }
-
         #region IProcessRequest Members
-        public void Process(Queue<RequestInfo> requests, string hostname, Action<string> onResult, Action<SendResult> onCompleted)
-        {
-        }
-        public async Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Action<string> onResult)
+        public async Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Func<string, SendResult> onResult)
         {
             while (requests.Count > 0)
             {
                 try
                 {
                     var req = requests.Dequeue();
-                    await ProcessImp(req, hostname, onResult);
+                    var result = await ProcessImp(req, hostname, onResult);
+                    if (!result.Success)
+                        return result;
                 }
                 catch (Exception exp)
                 {
@@ -40,7 +33,7 @@ namespace YAVC.Base.Requests
         }
         #endregion
 
-        protected virtual async Task<SendResult> ProcessImp(RequestInfo info, string hostname, Action<string> onResult)
+        protected virtual async Task<SendResult> ProcessImp(RequestInfo info, string hostname, Func<string, SendResult> onResult)
         {
             var uri = string.Format("http://{0}:{1}/{2}", hostname, info.Port, info.RelativeUri);
             var req = (HttpWebRequest)HttpWebRequest.CreateHttp(uri);

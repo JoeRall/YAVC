@@ -4,6 +4,6 @@ using System.Threading.Tasks;
 
 namespace YAVC.Base.Requests {
 	public interface IProcessRequest {
-		Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Action<string> onResult);
+		Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Func<string, SendResult> onResult);
 	}
 }
