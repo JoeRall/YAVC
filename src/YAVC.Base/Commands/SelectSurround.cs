@@ -7,7 +7,7 @@ namespace YAVC.Base.Commands {
 		private const string SET_STRAIT = @"<YAMAHA_AV cmd=""PUT""><{0}><Surround><Program_Sel><Current><Straight>{1}</Straight></Current></Program_Sel></Surround></{0}></YAMAHA_AV>";
 		private const string SET_DSP = @"<YAMAHA_AV cmd=""PUT""><{0}><Surround><Program_Sel><Current><Sound_Program>{1}</Sound_Program></Current></Program_Sel></Surround></{0}></YAMAHA_AV>";
 
-		public SelectSurround(Zone z, IProcessRequest processor) : base(z) { }
+		public SelectSurround(Zone z, IRequestProcesser processor) : base(z) { }
 
 		protected override SendResult ParseResponseImp(string xml) {
 			if (SuccessXML == xml)

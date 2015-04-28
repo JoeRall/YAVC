@@ -4,7 +4,7 @@ using YAVC.Base.Requests;
 namespace YAVC.Base {
 
 	public interface IFactory {
-		IProcessRequest RequestProcessor { get; }
+		IRequestProcesser RequestProcessor { get; }
 		IFindDevice DeviceFinder { get; }
 		IImageCache ImageCache { get; }
 		IMessageBox MessageBox { get; }
@@ -23,7 +23,7 @@ namespace YAVC.Base {
 		public static IImageCache ImageCache { get { return Default.ImageCache; } }
 		public static IFindDevice DeviceFinder { get { return Default.DeviceFinder; } }
 		public static IMessageBox MessageBox { get { return Default.MessageBox; } }
-		public static IProcessRequest RequestProcessor { get { return Default.RequestProcessor; } }
+		public static IRequestProcesser RequestProcessor { get { return Default.RequestProcessor; } }
 		public static IStringHelper StringHelper { get { return Default.StringHelper; } }
 		public static ITileService TileService { get { return Default.TileService; } }
 		public static IXmlIsoFileStorage FileStore { get { return Default.XmlIsoFileStore; } }

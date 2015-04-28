@@ -15,7 +15,7 @@ namespace YAVC.Base {
 		bool IsPartyModeOn { get; }
 		Zone[] Zones { get; }
 		Source[] Sources { get; }
-		IProcessRequest RequestProccessor { get; }
+		IRequestProcesser RequestProccessor { get; }
 		#endregion
 
 		void ChangeVolume(Zone z, Action<SendResult> OnComplete);

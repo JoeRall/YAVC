@@ -6,7 +6,7 @@ namespace YAVC.Base {
 		public IImageCache ImageCache { get; protected set; }
 		public IFindDevice DeviceFinder { get; protected set; }
 		public IMessageBox MessageBox { get; protected set; }
-		public IProcessRequest RequestProcessor { get; protected set; }
+		public IRequestProcesser RequestProcessor { get; protected set; }
 		public IStringHelper StringHelper { get; protected set; }
 		public ITileService TileService { get; protected set; }
 		public IXmlIsoFileStorage XmlIsoFileStore { get; protected set; }

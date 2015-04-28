@@ -4,6 +4,6 @@ using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
 	public interface ICommand {
-		Task<SendResult> SendAsync(IController c);
+        Task<SendResult> SendAsync(IRequestProcesser requestProcessor);
 	}
 }

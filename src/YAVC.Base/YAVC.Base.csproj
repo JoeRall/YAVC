@@ -94,7 +94,7 @@
     <Compile Include="IXmlIsoFileStorage.cs" />
     <Compile Include="IImageCache.cs" />
     <Compile Include="IMessageBox.cs" />
-    <Compile Include="Requests\IProcessRequest.cs" />
+    <Compile Include="Requests\IRequestProcesser.cs" />
     <Compile Include="Requests\yavcMethod.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Requests\RequestInfo.cs" />

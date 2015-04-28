@@ -66,7 +66,7 @@ namespace YAVC.Base.Models
                 return;
             }
             var info = new PlayInfo(Zone.SelectedInput);
-            var result = await info.SendAsync(TheController);
+            var result = await info.SendAsync(TheController.RequestProccessor);
 
             if (result.Success)
             {
@@ -114,7 +114,7 @@ namespace YAVC.Base.Models
         {
             if (!canChange || InvalidState) return;
             var pb = new Playback(Zone.SelectedInput, mode);
-            var result = await pb.SendAsync(TheController);
+            var result = await pb.SendAsync(TheController.RequestProccessor);
             await RefreshOnSuccess(result);
         }
 
@@ -127,7 +127,7 @@ namespace YAVC.Base.Models
         {
             if (!canSkip || InvalidState) return;
             var skip = new Skip(Zone.SelectedInput, direction);
-            var result = await skip.SendAsync(TheController);
+            var result = await skip.SendAsync(TheController.RequestProccessor);
             await RefreshOnSuccess(result);
         }
 

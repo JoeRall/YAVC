@@ -40,7 +40,7 @@ namespace YAVC.Base.Commands
 
         public bool IsOn { get; private set; }
 
-        public GetPartyMode(Zone z, IProcessRequest processor) { }
+        public GetPartyMode(Zone z, IRequestProcesser processor) { }
 
         protected override SendResult ParseResponseImp(string xmlS)
         {

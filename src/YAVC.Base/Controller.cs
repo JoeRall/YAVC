@@ -25,7 +25,7 @@ namespace YAVC.Base {
 		public string HostNameorAddress { get { return Device.HostnameOrIp; } }
 
 		public string RecieverName { get { return Device.FriendlyName; } }
-		public IProcessRequest RequestProccessor { get; private set; }
+		public IRequestProcesser RequestProccessor { get; private set; }
 
 		public Zone[] Zones { get { return Device.Zones; } set { Device.Zones = value; } }
 
@@ -157,7 +157,7 @@ namespace YAVC.Base {
 
 			var cmd = cmds.Dequeue();
 			
-            var sr = await cmd.SendAsync(this);
+            var sr = await cmd.SendAsync(this.RequestProccessor);
 
             if (sr.Success)
             {
@@ -172,7 +172,7 @@ namespace YAVC.Base {
 		protected async Task SendCommand(ACommand cmd, bool update, Action<SendResult> OnComplete) {
             SendResult sr = null;
 			if (update) {
-				sr = await cmd.SendAsync(this);
+                sr = await cmd.SendAsync(this.RequestProccessor);
                 if (sr.Success)
                     UpdateStatus(OnComplete);
                 else
@@ -180,7 +180,7 @@ namespace YAVC.Base {
                     OnComplete.NullableInvoke(sr);
                 }
 			} else {
-				sr = await cmd.SendAsync(this);
+                sr = await cmd.SendAsync(this.RequestProccessor);
                 OnComplete.NullableInvoke(sr);
 			}
 		}

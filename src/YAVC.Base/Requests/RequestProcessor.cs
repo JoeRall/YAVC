@@ -7,19 +7,27 @@ using System.Threading.Tasks;
 
 namespace YAVC.Base.Requests
 {
-    public class RequestProcessor : IProcessRequest
+    public class RequestProcessor : IRequestProcesser
     {
+
         private static Encoding CommandEncoding { get { return Encoding.UTF8; } }
 
+        private readonly string _Hostname;
+
+        public RequestProcessor(string hostname)
+        {
+            _Hostname = hostname;
+        }
+
         #region IProcessRequest Members
-        public async Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Func<string, SendResult> onResult)
+        public async Task<SendResult> Process(Queue<RequestInfo> requests, Func<string, SendResult> onResult)
         {
             while (requests.Count > 0)
             {
                 try
                 {
                     var req = requests.Dequeue();
-                    var result = await ProcessImp(req, hostname, onResult);
+                    var result = await ProcessImp(req, onResult);
                     if (!result.Success)
                         return result;
                 }
@@ -33,9 +41,9 @@ namespace YAVC.Base.Requests
         }
         #endregion
 
-        protected virtual async Task<SendResult> ProcessImp(RequestInfo info, string hostname, Func<string, SendResult> onResult)
+        protected virtual async Task<SendResult> ProcessImp(RequestInfo info, Func<string, SendResult> onResult)
         {
-            var uri = string.Format("http://{0}:{1}/{2}", hostname, info.Port, info.RelativeUri);
+            var uri = string.Format("http://{0}:{1}/{2}", _Hostname, info.Port, info.RelativeUri);
             var req = (HttpWebRequest)HttpWebRequest.CreateHttp(uri);
 
             foreach (var header in info.Headers)

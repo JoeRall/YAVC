@@ -12,8 +12,9 @@ namespace YAVC.Base.Commands {
 
 		protected abstract SendResult ParseResponseImp(string xml);
 		protected abstract RequestInfo[] GetRequestInfo();
-		
-		public async Task<SendResult> SendAsync(IController c) {
+
+        public async Task<SendResult> SendAsync(IRequestProcesser requestProcessor)
+        {
 			var requests = GetRequestInfo();
 			var infos = new Queue<RequestInfo>(requests.Length);
 
@@ -27,7 +28,7 @@ namespace YAVC.Base.Commands {
 				infos.Enqueue(req);
 			}
 
-            var sr = await c.RequestProccessor.Process(infos, c.HostNameorAddress, ParseResponseImp);
+            var sr = await requestProcessor.Process(infos, ParseResponseImp);
 
             return sr;
 		}

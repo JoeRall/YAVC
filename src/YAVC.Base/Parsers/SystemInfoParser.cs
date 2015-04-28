@@ -8,9 +8,9 @@ namespace YAVC.Base.Parsers {
 
 	public class SystemInfoParser : IParseSystemInfo {
 
-		private IProcessRequest _reqProcessor;
+		private IRequestProcesser _reqProcessor;
 
-		public SystemInfoParser(IProcessRequest reqProccessor, IParseZone zoneParser) {
+		public SystemInfoParser(IRequestProcesser reqProccessor, IParseZone zoneParser) {
 			_reqProcessor = reqProccessor;
 			ZoneParser = zoneParser;
 		}
