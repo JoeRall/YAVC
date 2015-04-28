@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YAVC.Base.Commands;
 using YAVC.Base.Data;
 using YAVC.Base.Parsers;
@@ -148,35 +149,39 @@ namespace YAVC.Base {
 		}
 
 		#region Helper Methods
-		protected void SendCommands(Queue<ACommand> cmds, Action<SendResult> OnComplete) {
+		protected async Task SendCommands(Queue<ACommand> cmds, Action<SendResult> OnComplete) {
 			if (cmds.Count == 0) {
 				OnComplete.NullableInvoke(SendResult.Succcess);
 				return;
 			}
 
 			var cmd = cmds.Dequeue();
-			cmd.Send(this, sr =>
-			{
-				if (sr.Success) {
-					SendCommands(cmds, OnComplete);
-				} else {
-					OnComplete.NullableInvoke(sr);
-				}
-			});
+			
+            var sr = await cmd.SendAsync(this);
+
+            if (sr.Success)
+            {
+                await SendCommands(cmds, OnComplete);
+            }
+            else
+            {
+                OnComplete.NullableInvoke(sr);
+            }
 		}
 
-		protected void SendCommand(ACommand cmd, bool update, Action<SendResult> OnComplete) {
+		protected async Task SendCommand(ACommand cmd, bool update, Action<SendResult> OnComplete) {
+            SendResult sr = null;
 			if (update) {
-				cmd.Send(this, sr =>
-				{
-					if (sr.Success)
-						UpdateStatus(OnComplete);
-					else {
-						OnComplete.NullableInvoke(sr);
-					}
-				});
+				sr = await cmd.SendAsync(this);
+                if (sr.Success)
+                    UpdateStatus(OnComplete);
+                else
+                {
+                    OnComplete.NullableInvoke(sr);
+                }
 			} else {
-				cmd.Send(this, sr => OnComplete.NullableInvoke(sr));
+				sr = await cmd.SendAsync(this);
+                OnComplete.NullableInvoke(sr);
 			}
 		}
 		#endregion

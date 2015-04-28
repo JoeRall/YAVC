@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
@@ -19,7 +20,7 @@ namespace YAVC.Base.Commands {
 			LastSendResult = ParseResponseImp(responseXML);
 		}
 
-		public void Send(IController c, Action<SendResult> onCompleted) {
+		public async Task<SendResult> SendAsync(IController c) {
 			var requests = GetRequestInfo();
 			var infos = new Queue<RequestInfo>(requests.Length);
 
@@ -33,8 +34,9 @@ namespace YAVC.Base.Commands {
 				infos.Enqueue(req);
 			}
 
-			c.RequestProccessor.Process(infos, c.HostNameorAddress, ParseResponse,
-				sr => onCompleted.NullableInvoke(sr));
+			var sr = await c.RequestProccessor.Process(infos, c.HostNameorAddress, ParseResponse);
+
+            return sr;
 		}
 	}
 }

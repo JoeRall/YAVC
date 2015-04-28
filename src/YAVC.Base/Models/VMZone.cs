@@ -68,10 +68,10 @@ namespace YAVC.Base.Models {
             set { SetValue(value, () => IsPureDirectOn); }
         }
 
-        public VMList List 
+        public VMList List
         {
-            get { return GetValue(() => List ); }
-            set { SetValue(value, () => List ); }
+            get { return GetValue(() => List); }
+            set { SetValue(value, () => List); }
         }
 
         public VMPlayback Playback

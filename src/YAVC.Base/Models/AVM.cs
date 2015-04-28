@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using YAVC.Base.Util;
 
 namespace YAVC.Base.Models {
@@ -28,7 +29,7 @@ namespace YAVC.Base.Models {
             {
                 if (TypeProperties.ContainsKey(me.MyType)) return;
 
-                var publicProperties = me.MyType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                var publicProperties = me.MyType.GetRuntimeProperties();
                 var publicPropertyNames = publicProperties.Where(p => p.CanRead).Select(p => p.Name);
 
                 TypeProperties[me.MyType] = new List<string>(publicPropertyNames);
@@ -49,7 +50,11 @@ namespace YAVC.Base.Models {
         protected T GetValue<T>(Expression<Func<T>> propReference)
         {
             var propertyName = GetPropertyName(propReference);
-            
+            return GetValue<T>(propertyName);
+        }
+
+        protected T GetValue<T>([CallerMemberName] string propertyName = null)
+        {
             if (PropertyValues.ContainsKey(propertyName))
                 return (T)PropertyValues[propertyName];
 
@@ -87,6 +92,11 @@ namespace YAVC.Base.Models {
         {
             var propertyName = GetPropertyName(propertyReference);
 
+            return SetValue(value, propertyName);
+        }
+
+        protected bool SetValue<T>(T value, [CallerMemberName] string propertyName = null)
+        {
             var shouldNotify = !PropertyValues.ContainsKey(propertyName) || !object.Equals(value, PropertyValues[propertyName]);
 
             PropertyValues[propertyName] = value;

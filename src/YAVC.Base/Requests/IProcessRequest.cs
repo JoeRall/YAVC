@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace YAVC.Base.Requests {
 	public interface IProcessRequest {
-		void Process(Queue<RequestInfo> requests, string hostname, Action<string> onResult, Action<SendResult> onCompleted);
+		Task<SendResult> Process(Queue<RequestInfo> requests, string hostname, Action<string> onResult);
 	}
 }

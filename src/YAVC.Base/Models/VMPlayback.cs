@@ -1,130 +1,155 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using YAVC.Base.Commands;
 using YAVC.Base.Data;
 using YAVC.Base.Requests;
 
-namespace YAVC.Base.Models {
-	public class VMPlayback : AVM {
+namespace YAVC.Base.Models
+{
+    public class VMPlayback : AVM
+    {
 
-		public MetaInfo[] Infos { get; set; }
-		public PlaybackInfo PlayInfo { get; set; }
+        public MetaInfo[] Infos { get; set; }
+        public PlaybackInfo PlayInfo { get; set; }
 
-		public bool CanPlay { get { return Control.CanPlay && !IsPlaying; } }
-		public bool CanPause { get { return Control.CanPause && PlayInfo == PlaybackInfo.Play; } }
-		public bool CanStop { get { return Control.CanStop; } }
-		public bool CanNext { get { return Control.CanNext; } }
-		public bool CanPrevious { get { return Control.CanPrev; } }
+        public bool CanPlay { get { return Control.CanPlay && !IsPlaying; } }
+        public bool CanPause { get { return Control.CanPause && PlayInfo == PlaybackInfo.Play; } }
+        public bool CanStop { get { return Control.CanStop; } }
+        public bool CanNext { get { return Control.CanNext; } }
+        public bool CanPrevious { get { return Control.CanPrev; } }
 
-		public bool IsPlaying { get { return PlayInfo == PlaybackInfo.Play; } }
-		public bool IsPaused { get { return PlayInfo == PlaybackInfo.Pause; } }
-		public bool IsStopped { get { return PlayInfo == PlaybackInfo.Stop; } }
+        public bool IsPlaying { get { return PlayInfo == PlaybackInfo.Play; } }
+        public bool IsPaused { get { return PlayInfo == PlaybackInfo.Pause; } }
+        public bool IsStopped { get { return PlayInfo == PlaybackInfo.Stop; } }
 
-		public string PlaybackString {
-			get {
-				switch (PlayInfo) {
-					case PlaybackInfo.Play:
-						return "Playing";
-					case PlaybackInfo.Pause:
-						return "Paused";
-					case PlaybackInfo.Stop:
-						return "Stopped";
-					case PlaybackInfo.Unknown:
-					default:
-						return "Unknown";
-				}
-			}
-		}
+        public string PlaybackString
+        {
+            get
+            {
+                switch (PlayInfo)
+                {
+                    case PlaybackInfo.Play:
+                        return "Playing";
+                    case PlaybackInfo.Pause:
+                        return "Paused";
+                    case PlaybackInfo.Stop:
+                        return "Stopped";
+                    case PlaybackInfo.Unknown:
+                    default:
+                        return "Unknown";
+                }
+            }
+        }
 
-		private PlayControl Control;
-		private bool InvalidState {
-			get { return null == Zone || null == Zone.SelectedInput || string.IsNullOrEmpty(Zone.SelectedInput.Src_Name); }
-		}
-		private VMZone Zone;
+        private PlayControl Control;
+        private bool InvalidState
+        {
+            get { return null == Zone || null == Zone.SelectedInput || string.IsNullOrEmpty(Zone.SelectedInput.Src_Name); }
+        }
+        private VMZone Zone;
 
-		public VMPlayback(VMZone zone)
-			: base(zone.TheController) {
-			Zone = zone;
-			Control = new PlayControl();
-		}
+        public VMPlayback(VMZone zone)
+            : base(zone.TheController)
+        {
+            Zone = zone;
+            Control = new PlayControl();
+        }
 
-		public void Refresh() {
-			if (null == Zone.SelectedInput || string.IsNullOrEmpty(Zone.SelectedInput.Src_Name)) {
-				Infos = new MetaInfo[0];
-				PlayInfo = PlaybackInfo.Unknown;
-				UI.Invoke(NotifyAll);
-				return;
-			}
-			var info = new PlayInfo(Zone.SelectedInput);
-			info.Send(TheController, result =>
-			{
-				if (result.Success) {
-					Infos = info.MetaInfo;
-					PlayInfo = info.Playback;
-					UpdateCans();
-					UI.Invoke(NotifyAll);
-				} else {
-					Infos = new MetaInfo[0];
-					PlayInfo = PlaybackInfo.Unknown;
-				}
-			});
-		}
+        public async Task Refresh()
+        {
+            if (null == Zone.SelectedInput || string.IsNullOrEmpty(Zone.SelectedInput.Src_Name))
+            {
+                Infos = new MetaInfo[0];
+                PlayInfo = PlaybackInfo.Unknown;
+                UI.Invoke(NotifyAll);
+                return;
+            }
+            var info = new PlayInfo(Zone.SelectedInput);
+            var result = await info.SendAsync(TheController);
 
-		#region Playback Methods
-		public void Next() {
-			Skip(CanNext, SkipDirection.Forward);
-		}
+            if (result.Success)
+            {
+                Infos = info.MetaInfo;
+                PlayInfo = info.Playback;
+                UpdateCans();
+                UI.Invoke(NotifyAll);
+            }
+            else
+            {
+                Infos = new MetaInfo[0];
+                PlayInfo = PlaybackInfo.Unknown;
+            }
+        }
 
-		public void Pause() {
-			ChangePlayback(CanPause, PlaybackInfo.Pause);
-		}
+        #region Playback Methods
+        public async Task Next()
+        {
+            await Skip(CanNext, SkipDirection.Forward);
+        }
 
-		public void Play() {
-			ChangePlayback(CanPlay, PlaybackInfo.Play);
-		}
+        public async Task Pause()
+        {
+            await ChangePlayback(CanPause, PlaybackInfo.Pause);
+        }
 
-		public void Previous() {
-			Skip(CanPrevious, SkipDirection.Backward);
-		}
+        public async Task Play()
+        {
+            await ChangePlayback(CanPlay, PlaybackInfo.Play);
+        }
 
-		public void Stop() {
-			ChangePlayback(CanStop, PlaybackInfo.Stop);
-		}
-		#endregion
+        public async Task Previous()
+        {
+            await Skip(CanPrevious, SkipDirection.Backward);
+        }
 
-		#region Helper Methods
-		private void ChangePlayback(bool canChange, PlaybackInfo mode) {
-			if (!canChange || InvalidState) return;
-			var pb = new Playback(Zone.SelectedInput, mode);
-			pb.Send(TheController, RefreshOnSuccess);
-		}
+        public async Task Stop()
+        {
+            await ChangePlayback(CanStop, PlaybackInfo.Stop);
+        }
+        #endregion
 
-		private void RefreshOnSuccess(SendResult result) {
-			if (result.Success) Refresh();
-		}
+        #region Helper Methods
+        private async Task ChangePlayback(bool canChange, PlaybackInfo mode)
+        {
+            if (!canChange || InvalidState) return;
+            var pb = new Playback(Zone.SelectedInput, mode);
+            var result = await pb.SendAsync(TheController);
+            await RefreshOnSuccess(result);
+        }
 
-		private void Skip(bool canSkip, SkipDirection direction) {
-			if (!canSkip || InvalidState) return;
-			var skip = new Skip(Zone.SelectedInput, direction);
-			skip.Send(TheController, RefreshOnSuccess);
-		}
+        private async Task RefreshOnSuccess(SendResult result)
+        {
+            if (result.Success) await Refresh();
+        }
 
-		private void UpdateCans() {
-			if (
-				null == TheController || null == TheController.Sources ||
-				null == Zone || null == Zone.SelectedInput) {
-				Control = new PlayControl();
-				return;
-			}
-			var source = TheController.Sources.FirstOrDefault(s => s.SourceName == Zone.SelectedInput.Src_Name);
+        private async Task Skip(bool canSkip, SkipDirection direction)
+        {
+            if (!canSkip || InvalidState) return;
+            var skip = new Skip(Zone.SelectedInput, direction);
+            var result = await skip.SendAsync(TheController);
+            await RefreshOnSuccess(result);
+        }
 
-			if (null == source || null == source.Control) {
-				Control = new PlayControl();
-				return;
-			}
+        private void UpdateCans()
+        {
+            if (
+                null == TheController || null == TheController.Sources ||
+                null == Zone || null == Zone.SelectedInput)
+            {
+                Control = new PlayControl();
+                return;
+            }
+            var source = TheController.Sources.FirstOrDefault(s => s.SourceName == Zone.SelectedInput.Src_Name);
 
-			Control = source.Control;
-		} 
-		#endregion
-	}
+            if (null == source || null == source.Control)
+            {
+                Control = new PlayControl();
+                return;
+            }
+
+            Control = source.Control;
+        }
+        #endregion
+    }
 }
