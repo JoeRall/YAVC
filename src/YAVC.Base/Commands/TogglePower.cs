@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using YAVC.Base.Data;
+﻿using YAVC.Base.Data;
 
 namespace YAVC.Base.Commands {
 	public class TogglePower : AZoneCommand {

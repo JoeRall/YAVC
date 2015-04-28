@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Xml.Linq;
 using YAVC.Base.Data;
-using YAVC.Base.Util;
 
 namespace YAVC.Base.Commands {
 	public class SetPureDirect : AZoneCommand {
