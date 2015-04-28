@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YAVC.Base.Commands {
+namespace YAVC.Base.Requests {
 	public struct RequestInfo {
 		public const string DefaultUri = @"YamahaRemoteControl/ctrl";
 		public const int DefaultPort = 80;

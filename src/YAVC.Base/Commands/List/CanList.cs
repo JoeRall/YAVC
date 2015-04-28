@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
 	public class CanList : ACommand {

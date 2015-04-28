@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using YAVC.Base.Data;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
 

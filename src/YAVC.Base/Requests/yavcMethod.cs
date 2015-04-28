@@ -1,5 +1,5 @@
 ﻿
-namespace YAVC.Base.Commands {
+namespace YAVC.Base.Requests {
 	public enum yavcMethod {
 		Get,
 		Post

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
 	public interface ICommand {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAVC.Base.Commands {
+namespace YAVC.Base.Requests {
 
 	public delegate void SendResultHandler(object sender, SendResult sr);
 	public delegate void SendResultHandler<T>(object sender, SendResult<T> sr);

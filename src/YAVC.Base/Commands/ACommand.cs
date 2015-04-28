@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base.Commands {
 

@@ -1,4 +1,5 @@
 ﻿using YAVC.Base.Commands;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base {
 

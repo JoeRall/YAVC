@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using YAVC.Base.Commands;
 
-namespace YAVC.Phone.Lib {
+namespace YAVC.Base.Requests {
 	public class RequestState {
 		public RequestState(string hostname, HttpWebRequest request, Queue<RequestInfo> infos, Action<string> responseAction, Action<SendResult> onCompleted) : this(hostname, null, request, infos, responseAction, onCompleted) { }
 		public RequestState(string hostname, byte[] body, HttpWebRequest request, Queue<RequestInfo> infos, Action<string> responseAction, Action<SendResult> onCompleted) {

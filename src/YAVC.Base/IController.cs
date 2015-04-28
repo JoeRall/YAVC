@@ -1,6 +1,7 @@
 ﻿using System;
 using YAVC.Base.Commands;
 using YAVC.Base.Data;
+using YAVC.Base.Requests;
 
 namespace YAVC.Base {
 	public interface IController {
